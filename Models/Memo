@@ -1,0 +1,5 @@
+1, Correlation --- Pearson Standard correlation coefficient:
+ Q = df.corr(method='pearson', min_periods=1)
+ http://pandas.pydata.org/pandas-docs/stable/generated/pandas.DataFrame.corr.html
+
+
