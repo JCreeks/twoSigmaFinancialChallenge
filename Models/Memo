@@ -2,4 +2,14 @@
  Q = df.corr(method='pearson', min_periods=1)
  http://pandas.pydata.org/pandas-docs/stable/generated/pandas.DataFrame.corr.html
 
+2, df.to_csv(‘out.csv’)
+ export dataframe to csv file
+
+3, In Kaggle folder:
+git pull origin master
+git add
+git commit --all -m “insert comment”
+git push origin master
+
+
 
