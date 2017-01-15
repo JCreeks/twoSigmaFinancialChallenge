@@ -26,8 +26,17 @@ Discussion Board
   ID Groupes
 
   https://www.kaggle.com/allunia/two-sigma-financial-modeling/feature-dynamics-looking-at-id-groups
+  
+  Timestamp analysis:
+  https://www.kaggle.com/anokas/two-sigma-financial-modeling/two-sigma-time-travel-eda/notebook
+  
+  
+3. Overfitting:
 
- 3. Example Codes
+   https://www.kaggle.com/sudalairajkumar/two-sigma-financial-modeling/am-i-over-fitting/notebook
+
+
+4. Example Codes
 
    time series xgboost + lm
    https://www.kaggle.com/vsmolyakov/two-sigma-financial-modeling/time-series-xgboost-lm/code
@@ -43,5 +52,6 @@ Discussion Board
 
    Tree+Linear Regression
    https://www.kaggle.com/the1owl/two-sigma-financial-modeling/initial-script/code
+   
 
 
