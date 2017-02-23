@@ -22,39 +22,41 @@ o = env.reset()
 excl = [env.ID_COL_NAME, env.SAMPLE_COL_NAME, env.TARGET_COL_NAME, env.TIME_COL_NAME]
 col = [c for c in o.train.columns if c not in excl]
 
-# In[3]:
-
 #train = pd.read_hdf(r'C:\Users\jiguo\Desktop\KProject\input\train.h5')
-train = pd.read_hdf('../input/train.h5')
-train = train[col]
-d_mean= train.median(axis=0)
+O = pd.read_hdf('../input/train.h5')
+d_mean= O[col].median(axis=0)
+ymean_dict = dict(o.train.groupby(["id"])["y"].median())
 
 
 
-# In[4]:
-
-#train for trees
-train = o.train[col]
-n = train.isnull().sum(axis=1)
-# for c in train.columns:
-#     train[c + '_nan_'] = pd.isnull(train[c])
-#     d_mean[c + '_nan_'] = 0
-train = train.fillna(d_mean)
-train['znull'] = n
-n = []
-
-# O = pd.read_hdf('../input/train.h5')
-# Train = O[col]
-# n = Train.isnull().sum(axis=1)
-# for c in Train.columns:
-#     Train[c + '_nan_'] = pd.isnull(Train[c])
-#     d_mean[c + '_nan_'] = 0
-# Train = Train.fillna(d_mean)
-# Train['znull'] = n
-# n = []
+def NAOperation(train, d_mean):
+    n = train.isnull().sum(axis=1)
+    for c in train.columns:
+        train[c + '_nan_'] = pd.isnull(train[c])
+        d_mean[c + '_nan_'] = 0
+    #train = train.fillna(d_mean)
+    train['znull'] = n
+    n = []
+    return train
 
 
-# In[5]:
+class RTR(object):
+    def __init__(self, d_mean, n_estimators=40, max_depth=4, n_jobs=-1,                                                         random_state=17, verbose=0):
+#         self.objective=objective
+#         self.colsample_bytree=colsample_bytree
+#         self.subsample=subsample
+#         self.min_child_weight=min_child_weight
+#         self.base_score=base_score
+        self.d_mean=d_mean
+        self.model=ExtraTreesRegressor(n_estimators=n_estimators, max_depth=max_depth,\
+                                   n_jobs=n_jobs, random_state=random_state, \
+                                   verbose=verbose)
+        
+    def fit(self, X_train, y_train):
+        self.model.fit(NAOperation(X_train, self.d_mean), y_train)
+        
+    def predict(self, X_test):
+        return self.model.predict(NAOperation(X_test, self.d_mean))
 
 class LR_tech_20():
     def __init__(self, d_mean, col, low_y_cut=-0.085, high_y_cut=0.075, n_jobs=-1):
@@ -76,11 +78,6 @@ class LR_tech_20():
     def predict(self, test):
         return self.model.predict(np.array(test[self.col].fillna(self.d_mean)['technical_20'].values).\
         reshape(-1,1)).clip(self.low_y_cut, self.high_y_cut)
-
-
-# In[6]:
-
-ymean_dict = dict(o.train.groupby(["id"])["y"].median())
 
 
 # In[8]:
@@ -130,12 +127,12 @@ start=time()
 #model2 = LR_tech_20(d_mean=d_mean, col=col, n_jobs=7)
 n_folds = 2
 ensembleObj=Ensemble(n_folds=n_folds, stacker=LinearRegression(fit_intercept=False, n_jobs=-1), \
-base_models=[[ExtraTreesRegressor(n_estimators=50, max_features='auto',\
-max_depth=4, n_jobs=-1, random_state=17, verbose=0) for i in range(n_folds)], \
+base_models=[[RTR(n_estimators=50, max_features='auto', max_depth=4, n_jobs=-1, random_state=17, \
+                  verbose=0) for i in range(n_folds)], \
 [LR_tech_20(d_mean=d_mean, col=col, n_jobs=-1) for i in range(n_folds)], \
 [xgb.XGBRegressor(objective='reg:linear', colsample_bytree=.8, subsample=.8, min_child_weight=1000,\
 base_score=.5) for i in range(n_folds)]])
-ensembleObj.fit(X=train, y=o.train.y) #x is filled na
+ensembleObj.fit(X=o.train[col], y=o.train.y) #x is filled na
 end = time()
 print(end - start)
 
@@ -153,8 +150,8 @@ coeff1=.975
 while True:
     test = o.features[col]
     n = test.isnull().sum(axis=1)
-    # for c in test.columns:
-    #     test[c + '_nan_'] = pd.isnull(test[c])
+    for c in test.columns:
+         test[c + '_nan_'] = pd.isnull(test[c])
     test = test.fillna(d_mean)
     test['znull'] = n
     pred = o.target
