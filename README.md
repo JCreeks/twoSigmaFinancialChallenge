@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # KaggleCompetition
 Kaggle competition repo
 
@@ -23,3 +24,6 @@ To upload your changes to the server (github) after you committed them, run this
     git push origin master
 
 Now your collaborator can run the first command and retrieve these changes for himself, and work on it. If you find that the system tells you that you can't push, it means that the other person has made some changes and uploaded to the server, but you don't know about those changes yet. To resolve it, you need to run `git pull origin master` first, then do the push.
+=======
+# TwoSigCompetition
+>>>>>>> aef0f4fa6110a37a1c1e6e8b8b990d1fcb2f9697
