@@ -15,6 +15,7 @@ where XXXXX is some message that you want to associate with this update. You can
 If you added a new file, say "output.csv", you will need to add it to the git tracking system first with the following command:
 
 git add output.csv
+
 And then you can commit it using the previous command. The message for this could be something like "Added a new file called output.csv".
 
 To upload your changes to the server (github) after you committed them, run this in the terminal:
