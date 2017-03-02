@@ -1,4 +1,5 @@
 "# TwoSigConnect" 
+
 How to use this thing
 
 To update your local copy of the code, run this in the terminal:
@@ -8,6 +9,7 @@ git pull origin master
 When you have made some changes and want to register all these changes to git, run this in the terminal:
 
 git commit --all -m "XXXXX"
+
 where XXXXX is some message that you want to associate with this update. You can write things like "I fixed a small typo in the file main.py" or "Implemented a new machine-learning strategy".
 
 If you added a new file, say "output.csv", you will need to add it to the git tracking system first with the following command:
