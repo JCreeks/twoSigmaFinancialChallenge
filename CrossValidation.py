@@ -33,27 +33,15 @@ def CVScore(model, X_train, y_train, n_splits=5, is_TimeSeries=False, seed=2017,
         X_CVholdout = X_train[test_idx]
         y_CVholdout = y_train[test_idx]
         model.fit(X_CVtrain, y_CVtrain)
-        pred = model.predict(X_CVholdout)[:]
+        if my_score==log_loss:
+            pred=model.predict_proba(X_CVholdout)
+        else:
+            pred = model.predict(X_CVholdout)[:]
         cv_scores.append(my_score(y_CVholdout, pred))
     return np.mean(cv_scores)
 
 
-# In[31]:
 
-n=1000
-np.random.seed(17)
-X=pd.DataFrame(np.random.randn(n,1))
-y=X.iloc[:,0]+.2*pd.Series(np.random.randn(n))
-X_train,y_train=X.iloc[:n/2], y.iloc[:n/2]
-X_test, y_test=X.iloc[n/2:], y.iloc[n/2:]
-
-
-# In[32]:
-
-CVScore(linear_model.LinearRegression(fit_intercept=False), X_train, y_train)
-
-
-# In[ ]:
 
 
 
