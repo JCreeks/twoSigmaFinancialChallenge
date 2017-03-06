@@ -105,6 +105,9 @@ class xgbClass(object):
     def predict(self, X_test):
         dtest = xgb.DMatrix(X_test)
         return self.model.predict(dtest)
-
+    
+    def predict_proba(self, X_test):
+        dtest = xgb.DMatrix(X_test)
+        return self.model.predict(dtest)
 
 

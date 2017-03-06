@@ -21,13 +21,14 @@ from sklearn.metrics.scorer import make_scorer
 
 def CVScore(model, X_train, y_train, n_splits=5, is_TimeSeries=False, seed=2017, my_score=mse):
     cv_scores = []
-    X_train=np.array(X_train)
-    y_train=np.array(y_train)
+    if not len(np.array(X_train).shape)==0:
+        X_train=np.array(X_train)
+        y_train=np.array(y_train)
     if not is_TimeSeries:
         kf=KFold(n_splits=n_splits, shuffle=True, random_state=17)
     else:
         kf=TimeSeriesSplit(n_splits=n_splits)
-    for train_idx, test_idx in kf.split(np.arange(len(X_train))):
+    for train_idx, test_idx in kf.split(X_train):
         X_CVtrain = X_train[train_idx]
         y_CVtrain = y_train[train_idx]
         X_CVholdout = X_train[test_idx]
