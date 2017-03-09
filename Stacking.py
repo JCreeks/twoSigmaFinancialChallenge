@@ -90,7 +90,7 @@ class EnsembleClassifier(object):
                 # y_CVholdout = y_train[test_idx]
                 clf[j].fit(X_CVtrain, y_CVtrain)
                 y_pred = clf[j].predict_proba(X_CVholdout)
-                self.S_train[test_idx, i:(i+self.n_class)] = y_pred
+                self.S_train[test_idx, (i*self.n_class):((i+1)*self.n_class)] = y_pred
         self.stacker.fit(self.S_train, y_train)
         
     def predict(self, X_test):    
@@ -102,7 +102,7 @@ class EnsembleClassifier(object):
             for j in range(self.n_folds):
                 print('startig predicting model {}, training set {}'.format(i,j))
                 S_test_i[:, :, j] = clf[j].predict_proba(X_test)
-            self.S_test[:, i:(i+self.n_class)] = S_test_i.mean(2)
+            self.S_test[:, (i*self.n_class):((i+1)*self.n_class)] = S_test_i.mean(2)
         y_pred = self.stacker.predict(self.S_test)
         return y_pred
     
@@ -115,7 +115,7 @@ class EnsembleClassifier(object):
             for j in range(self.n_folds):
                 print('startig predicting model {}, training set {}'.format(i,j))
                 S_test_i[:, :, j] = clf[j].predict_proba(X_test)
-            self.S_test[:, i:(i+self.n_class)] = S_test_i.mean(2)
+            self.S_test[:, (i*self.n_class):((i+1)*self.n_class)] = S_test_i.mean(2)
         y_pred = self.stacker.predict_proba(self.S_test)
         return y_pred
 
