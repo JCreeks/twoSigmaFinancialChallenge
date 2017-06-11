@@ -14,6 +14,7 @@ import xgboost as xgb
 from xgboost import XGBClassifier, XGBRegressor
 from sklearn.metrics import log_loss, mean_squared_error as mse, r2_score 
 from sklearn.metrics.scorer import make_scorer
+import matplotlib.pyplot as plt
 
 
 # In[7]:
@@ -141,3 +142,4 @@ def modelfit(alg, dtrain, predictors, target, outputMetrics=mse, XGBmetrics='rms
     feat_imp = pd.Series(alg.booster().get_fscore()).sort_values(ascending=False)
     feat_imp.plot(kind='bar', title='Feature Importances')
     plt.ylabel('Feature Importance Score')
+    plt.figure(figsize=(8,13))
