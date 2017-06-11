@@ -138,8 +138,10 @@ def modelfit(alg, dtrain, predictors, target, outputMetrics=mse, XGBmetrics='rms
     print "\nModel Report"
     print "CV metrics : %.4g" % outputMetrics(dtrain[target].values, dtrain_predictions)
     #print metrics+" Score (Train): %f" % metrics.roc_auc_score(dtrain['Disbursed'], dtrain_predprob)
-                    
-    feat_imp = pd.Series(alg.booster().get_fscore()).sort_values(ascending=False)
-    feat_imp.plot(kind='bar', title='Feature Importances')
-    plt.ylabel('Feature Importance Score')
-    plt.figure(figsize=(8,13))
+      
+    fig, ax = plt.subplots(1, 1, figsize=(8, 13))
+    xgb.plot_importance(alg, max_num_features=50, height=0.5, ax=ax)
+    #feat_imp = pd.Series(alg.booster().get_fscore()).sort_values(ascending=False)
+    #feat_imp.plot(kind='bar', title='Feature Importances')
+    #plt.ylabel('Feature Importance Score')
+    #plt.figure(figsize=(8,13))
